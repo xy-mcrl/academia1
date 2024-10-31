@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Painel do Treinador</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4; /* Cor de fundo clara */
+        }
+
+        #app {
+            transition: margin-left 0.3s;
+            padding: 160px;
+            margin-left: 350px; /* Deixa espaço para o drawer fixo */
+        }
+
+        /* Estilo do Drawer */
+        #drawer {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0; /* Fica fixo na tela */
+            background: linear-gradient(to bottom, #e61717, #9b2121); /* Gradiente de cor */
+            overflow-x: hidden;
+            padding-top: 20px;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5); /* Sombra mais suave */
+        }
+
+        /* Estilo dos links no Drawer */
+        #drawer a {
+            padding: 16px 20px;
+            text-decoration: none;
+            font-size: 18px;
+            color: #ffffff; /* Texto branco */
+            display: block;
+            transition: 0.3s;
+            border-radius: 5px; /* Bordas arredondadas */
+            margin: 5px 0; /* Espaçamento entre os links */
+            position: relative; /* Para o efeito de pseudo-elemento */
+        }
+
+        #drawer a::after {
+            content: '';
+            display: block;
+            height: 3px;
+            width: 0;
+            background: #fff;
+            transition: width 0.3s;
+            position: absolute;
+            bottom: 10px; /* Posiciona o efeito */
+            left: 20px; /* Largura da margem */
+        }
+
+        #drawer a:hover::after {
+            width: 100%; /* Expande o efeito ao passar o mouse */
+        }
+
+        #drawer a:hover {
+            background-color: rgba(255, 255, 255, 0.2); /* Cor de fundo ao passar o mouse */
+        }
+
+        /* Estilo do conteúdo principal */
+        h1 {
+            color: #e61717; /* Cor do título */
+        }
+
+        p {
+            color: #e61717; /* Cor do texto */
+            font-size: 20px;
+        }
+
+        /* Estilo do botão de logout */
+        .logout {
+            background-color: #d9534f; /* Vermelho para o botão de logout */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .logout:hover {
+            background-color: #c9302c; /* Vermelho mais escuro ao passar o mouse */
+        }
+    </style>
+</head>
+<body>
+
+    <div id="drawer">
+        <h2 style="color: #ffffff; text-align: center;">Menu do Treinador</h2>
+        <a href="workout.html">Cadastrar Treino</a>
+        <a href="list-workouts.html">Listar Treinos</a>
+        <a href="progress.html">Acompanhar Alunos</a>
+        <a href="nutrition.html">Cadastrar Plano Nutricional</a>
+        <button class="logout" onclick="logout()">Sair</button>
+    </div>
+
+    <div id="app">
+        <h1>Painel do Treinador</h1>
+        <p>Bem-vindo ao painel do treinador! Use o menu para navegar.</p>
+    </div>
+
+    <script>
+        function logout() {
+            // Lógica de logout (ex: limpar o armazenamento local e redirecionar para a página de login)
+            alert("Você saiu do sistema!");
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

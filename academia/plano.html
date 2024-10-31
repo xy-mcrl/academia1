@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Tela Principal do Aluno</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4; /* Cor de fundo clara */
+            display: flex; /* Usar Flexbox */
+            justify-content: center; /* Centraliza horizontalmente */
+            align-items: center; /* Centraliza verticalmente */
+            height: 100vh; /* Altura total da viewport */
+        }
+
+        #app {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Centraliza horizontalmente */
+            padding: 20px; /* Padding para o conteúdo */
+            background-color: white; /* Fundo branco para o container */
+            border-radius: 5px; /* Bordas arredondadas */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+            width: 100%; /* Para permitir que a largura ocupe 100% do espaço disponível */
+            max-width: 600px; /* Largura máxima do container */
+        }
+
+        h1, h2 {
+            color: #e61717; /* Cor do título */
+        }
+
+        p {
+            color: #555; /* Cor do texto */
+            font-size: 18px;
+        }
+
+        /* Estilo da tabela de planos nutricionais */
+        table {
+            width: 100%; /* Tabela ocupa toda a largura */
+            border-collapse: collapse; /* Remover espaçamento entre células */
+            margin-bottom: 20px; /* Margem abaixo da tabela */
+        }
+
+        th, td {
+            border: 1px solid #ccc; /* Borda suave */
+            padding: 10px; /* Padding interno */
+            text-align: left; /* Alinhamento do texto */
+        }
+
+        th {
+            background-color: #e61717; /* Cor de fundo do cabeçalho */
+            color: white; /* Texto branco no cabeçalho */
+        }
+
+        /* Estilo do botão */
+        button {
+            background-color: #9b4545; /* Cor do botão */
+            color: white; /* Cor do texto do botão */
+            border: none; /* Sem borda */
+            padding: 10px 20px; /* Padding interno do botão */
+            border-radius: 5px; /* Bordas arredondadas */
+            cursor: pointer; /* Cursor de ponteiro */
+            transition: background-color 0.3s; /* Transição suave */
+            margin: 10px 0; /* Margem para os botões */
+        }
+
+        button:hover {
+            background-color: #7e3a3a; /* Cor do botão ao passar o mouse */
+        }
+
+        .back-button {
+            background-color: #e61717; /* Cor do botão de voltar */
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1>Planos Nutricionais</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Título</th>
+                    <th>Descrição</th>
+                    <th>Refeição</th>
+                    <th>Alimentos</th>
+                    <th>Quantidade</th>
+                    <th>Horário</th>
+                </tr>
+            </thead>
+            <tbody id="nutrition-table">
+                <!-- Os dados serão inseridos aqui -->
+            </tbody>
+        </table>
+        <button class="back-button" onclick="window.location.href='student.html'">Voltar</button>
+    </div>
+
+    <script>
+        // Carregar planos do localStorage
+        const plans = JSON.parse(localStorage.getItem('nutritionPlans')) || [];
+        const tableBody = document.getElementById('nutrition-table');
+
+        plans.forEach(plan => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${plan.title}</td>
+                <td>${plan.description}</td>
+                <td>${plan.meal.mealName}</td>
+                <td>${plan.meal.mealFoods}</td>
+                <td>${plan.meal.mealQuantity}</td>
+                <td>${plan.meal.mealTime}</td>
+            `;
+            tableBody.appendChild(row);
+        });
+    </script>
+</body>
+</html>

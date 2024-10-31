@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Listar Treinos</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #eef2f3;
+            margin: 0;
+            padding: 20px;
+        }
+
+        #app {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+
+        h1 {
+            color: #388E3C;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s;
+        }
+
+        li:hover {
+            background-color: #e0e0e0;
+        }
+
+        button {
+            background-color: #d9534f;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #c9302c;
+        }
+
+        .back-button {
+            display: block;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #388E3C;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1>Listar Treinos</h1>
+        <ul id="workout-list"></ul>
+        <button class="back-button" onclick="window.history.back()">Voltar</button>
+    </div>
+
+    <script>
+        function loadWorkouts() {
+            const workoutList = document.getElementById('workout-list');
+            workoutList.innerHTML = ''; // Limpa a lista antes de carregar
+
+            const workouts = JSON.parse(localStorage.getItem('workouts')) || [];
+
+            workouts.forEach((workout, index) => {
+                const exercisesList = workout.exercises.map(ex => `${ex.exercise} (${ex.sets} séries, ${ex.repetitions} repetições)`).join(', ');
+
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <span>${workout.studentName}: ${workout.title} (${workout.frequency}): ${workout.description}</span>
+                    <span>Exercícios: ${exercisesList}</span>
+                    <button onclick="deleteWorkout(${index})">Excluir</button>
+                `;
+                workoutList.appendChild(li);
+            });
+
+            if (workouts.length === 0) {
+                workoutList.innerHTML = '<li>Nenhum treino cadastrado.</li>';
+            }
+        }
+
+        function deleteWorkout(index) {
+            const workouts = JSON.parse(localStorage.getItem('workouts')) || [];
+            workouts.splice(index, 1);
+            localStorage.setItem('workouts', JSON.stringify(workouts));
+            alert("Treino excluído!");
+            loadWorkouts();
+        }
+
+        window.onload = loadWorkouts;
+    </script>
+</body>
+</html>

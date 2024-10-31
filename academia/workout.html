@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Cadastro de Treino</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        #app {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+
+        h1 {
+            color: #e61717;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #e61717;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #8f2828;
+        }
+
+        .exercise-container {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .exercise-container input {
+            margin-bottom: 10px;
+        }
+
+        .exercises-list {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1>Cadastrar Treino</h1>
+        <form id="workout-form">
+            <input type="text" id="studentName" placeholder="Nome do Aluno" required>
+            <input type="text" id="title" placeholder="Nome do Treino" required>
+            <textarea id="description" placeholder="Descrição do Treino" required></textarea>
+            
+            <div class="exercises-list" id="exercises-list">
+                <h2>Exercícios</h2>
+                <div class="exercise-container">
+                    <input type="text" class="exercise" placeholder="Exercício" required>
+                    <select class="sets" required>
+                        <option value="" disabled selected>Séries</option>
+                        <option value="1">1 série</option>
+                        <option value="2">2 séries</option>
+                        <option value="3">3 séries</option>
+                        <option value="4">4 séries</option>
+                    </select>
+                    <select class="repetitions" required>
+                        <option value="" disabled selected>Repetições</option>
+                        <option value="10">10 repetições</option>
+                        <option value="12">12 repetições</option>
+                        <option value="15">15 repetições</option>
+                        <option value="20">20 repetições</option>
+                    </select>
+                </div>
+            </div>
+            <button type="button" id="add-exercise">Adicionar Exercício</button>
+
+            <button type="submit">Salvar Treino</button>
+            <button type="button" class="back-button" onclick="window.history.back()">Voltar</button>
+        </form>
+    </div>
+    <script>
+        // Script para adicionar exercícios e salvar o treino
+        document.getElementById('add-exercise').addEventListener('click', () => {
+            const exerciseContainer = document.createElement('div');
+            exerciseContainer.classList.add('exercise-container');
+            exerciseContainer.innerHTML = `
+                <input type="text" class="exercise" placeholder="Exercício" required>
+                <select class="sets" required>
+                    <option value="" disabled selected>Séries</option>
+                    <option value="1">1 série</option>
+                    <option value="2">2 séries</option>
+                    <option value="3">3 séries</option>
+                    <option value="4">4 séries</option>
+                </select>
+                <select class="repetitions" required>
+                    <option value="" disabled selected>Repetições</option>
+                    <option value="10">10 repetições</option>
+                    <option value="12">12 repetições</option>
+                    <option value="15">15 repetições</option>
+                    <option value="20">20 repetições</option>
+                </select>
+            `;
+            document.getElementById('exercises-list').appendChild(exerciseContainer);
+        });
+
+        document.getElementById('workout-form').addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const studentName = document.getElementById('studentName').value;
+            const title = document.getElementById('title').value;
+            const description = document.getElementById('description').value;
+
+            // Obtém os dados dos exercícios
+            const exercises = [];
+            const exerciseContainers = document.querySelectorAll('.exercise-container');
+            exerciseContainers.forEach(container => {
+                const exercise = container.querySelector('.exercise').value;
+                const sets = container.querySelector('.sets').value;
+                const repetitions = container.querySelector('.repetitions').value;
+                exercises.push({ exercise, sets, repetitions });
+            });
+
+            // Obtém os treinos armazenados
+            const workouts = JSON.parse(localStorage.getItem('workouts')) || [];
+            // Adiciona o novo treino ao array
+            workouts.push({ 
+                studentName, 
+                title, 
+                description, 
+                exercises 
+            });
+            // Atualiza o localStorage
+            localStorage.setItem('workouts', JSON.stringify(workouts));
+
+            alert("Treino cadastrado com sucesso!");
+
+            // Limpa o formulário após o cadastro
+            document.getElementById('workout-form').reset();
+            document.getElementById('exercises-list').innerHTML = `
+                <h2>Exercícios</h2>
+                <div class="exercise-container">
+                    <input type="text" class="exercise" placeholder="Exercício" required>
+                    <select class="sets" required>
+                        <option value="" disabled selected>Séries</option>
+                        <option value="1">1 série</option>
+                        <option value="2">2 séries</option>
+                        <option value="3">3 séries</option>
+                        <option value="4">4 séries</option>
+                    </select>
+                    <select class="repetitions" required>
+                        <option value="" disabled selected>Repetições</option>
+                        <option value="10">10 repetições</option>
+                        <option value="12">12 repetições</option>
+                        <option value="15">15 repetições</option>
+                        <option value="20">20 repetições</option>
+                    </select>
+                </div>
+            `;
+        });
+        const frequency = document.getElementById('frequency').value; // Nova linha
+        workouts.push({ 
+                studentName, 
+                title, 
+                description, 
+                frequency, // Adicionando a frequência
+                exercises 
+            });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Chat com o Treinador</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4; /* Cor de fundo clara */
+            display: flex; /* Usar Flexbox */
+            justify-content: center; /* Centraliza horizontalmente */
+            align-items: center; /* Centraliza verticalmente */
+            height: 100vh; /* Altura total da viewport */
+        }
+
+        #app {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Centraliza horizontalmente */
+            padding: 20px; /* Padding para o conteúdo */
+            background-color: white; /* Fundo branco para o container */
+            border-radius: 5px; /* Bordas arredondadas */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+            width: 100%; /* Para permitir que a largura ocupe 100% do espaço disponível */
+            max-width: 600px; /* Largura máxima do container */
+        }
+
+        h1 {
+            color: #e61717; /* Cor do título */
+        }
+
+        .chat-window {
+            width: 100%; /* Largura da janela de chat */
+            height: 400px; /* Altura fixa da janela de chat */
+            border: 1px solid #ccc; /* Borda da janela */
+            border-radius: 5px; /* Bordas arredondadas */
+            padding: 10px; /* Padding interno da janela */
+            overflow-y: auto; /* Adiciona scroll vertical */
+            background-color: #f9f9f9; /* Cor de fundo da janela de chat */
+            margin-bottom: 20px; /* Margem abaixo da janela */
+        }
+
+        .message {
+            margin: 5px 0; /* Margem entre as mensagens */
+            padding: 5px; /* Padding das mensagens */
+            border-radius: 5px; /* Bordas arredondadas nas mensagens */
+        }
+
+        .message.student {
+            background-color: #e1f5fe; /* Cor de fundo para mensagens do aluno */
+            align-self: flex-end; /* Alinha à direita */
+        }
+
+        .message.trainer {
+            background-color: #fce4ec; /* Cor de fundo para mensagens do treinador */
+            align-self: flex-start; /* Alinha à esquerda */
+        }
+
+        input[type="text"] {
+            width: calc(100% - 22px); /* Largura com ajuste para o padding */
+            padding: 10px; /* Padding interno */
+            border: 1px solid #ccc; /* Borda suave */
+            border-radius: 5px; /* Bordas arredondadas */
+            margin-bottom: 10px; /* Margem abaixo do campo de input */
+        }
+
+        button {
+            background-color: #388E3C; /* Cor do botão */
+            color: white; /* Cor do texto do botão */
+            border: none; /* Sem borda */
+            padding: 10px 20px; /* Padding interno do botão */
+            border-radius: 5px; /* Bordas arredondadas */
+            cursor: pointer; /* Cursor de ponteiro */
+            transition: background-color 0.3s; /* Transição suave */
+        }
+
+        button:hover {
+            background-color: #4CAF50; /* Cor do botão ao passar o mouse */
+        }
+
+        .back-button {
+            background-color: #e61717; /* Cor do botão de voltar */
+            margin-top: 10px; /* Margem acima do botão de voltar */
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1>Chat com o Treinador</h1>
+        
+        <div class="chat-window" id="chatWindow">
+            <!-- Mensagens do chat aparecerão aqui -->
+        </div>
+
+        <input type="text" id="messageInput" placeholder="Digite sua mensagem...">
+        <button onclick="sendMessage()">Enviar</button>
+        
+        <button class="back-button" onclick="window.location.href='student.html'">Voltar</button>
+    </div>
+
+    <script>
+        function sendMessage() {
+            const messageInput = document.getElementById('messageInput');
+            const message = messageInput.value;
+            if (message.trim() === '') return; // Não envia mensagens vazias
+
+            const chatWindow = document.getElementById('chatWindow');
+            const studentMessage = document.createElement('div');
+            studentMessage.className = 'message student';
+            studentMessage.textContent = message;
+            chatWindow.appendChild(studentMessage);
+
+            messageInput.value = ''; // Limpa o campo de input
+
+            // Aqui você poderia adicionar lógica para simular uma resposta do treinador
+            setTimeout(() => {
+                const trainerMessage = document.createElement('div');
+                trainerMessage.className = 'message trainer';
+                trainerMessage.textContent = 'Mensagem do treinador'; // Simula uma resposta do treinador
+                chatWindow.appendChild(trainerMessage);
+                chatWindow.scrollTop = chatWindow.scrollHeight; // Rolagem automática para a última mensagem
+            }, 1000);
+        }
+    </script>
+</body>
+</html>

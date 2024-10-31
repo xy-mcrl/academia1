@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Meu Treino</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4; /* Cor de fundo clara */
+            display: flex; /* Usar Flexbox */
+            justify-content: center; /* Centraliza horizontalmente */
+            align-items: center; /* Centraliza verticalmente */
+            height: 100vh; /* Altura total da viewport */
+        }
+
+        #app {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Centraliza horizontalmente */
+            padding: 20px; /* Padding para o conteúdo */
+            background-color: white; /* Fundo branco para o container */
+            border-radius: 5px; /* Bordas arredondadas */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+            width: 100%; /* Para permitir que a largura ocupe 100% do espaço disponível */
+            max-width: 600px; /* Largura máxima do container */
+        }
+
+        h1 {
+            color: #e61717; /* Cor do título */
+        }
+
+        h2 {
+            color: #388E3C; /* Cor dos subtítulos */
+        }
+
+        p {
+            color: #555; /* Cor do texto */
+            font-size: 18px;
+        }
+
+        /* Estilo da tabela de treinos */
+        table {
+            width: 100%; /* Tabela ocupa toda a largura */
+            border-collapse: collapse; /* Remover espaçamento entre células */
+            margin-bottom: 20px; /* Margem abaixo da tabela */
+        }
+
+        th, td {
+            border: 1px solid #ccc; /* Borda suave */
+            padding: 10px; /* Padding interno */
+            text-align: left; /* Alinhamento do texto */
+        }
+
+        th {
+            background-color: #e61717; /* Cor de fundo do cabeçalho */
+            color: white; /* Texto branco no cabeçalho */
+        }
+
+        .back-button {
+            background-color: #e61717; /* Cor do botão de voltar */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #8f2828;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1>Meu Treino</h1>
+        <p>Acompanhe seus exercícios, séries e repetições abaixo:</p>
+
+        <h2>Lista de Exercícios</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Exercício</th>
+                    <th>Séries</th>
+                    <th>Repetições</th>
+                    <th>Feito?</th>
+                    <th>Quantidade</th>
+                </tr>
+            </thead>
+            <tbody id="workouts-table">
+                <!-- Os dados dos treinos serão inseridos aqui -->
+            </tbody>
+        </table>
+
+        <button class="back-button" onclick="window.location.href='student.html'">Voltar</button>
+        <button class="back-button" id="save-progress">Salvar Progresso</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const workouts = JSON.parse(localStorage.getItem('workouts')) || [];
+            const tableBody = document.getElementById('workouts-table');
+            const studentName = prompt("Digite seu nome:");
+
+            const studentWorkouts = workouts.filter(workout => workout.studentName.toLowerCase() === studentName.toLowerCase());
+
+            if (studentWorkouts.length === 0) {
+                const noWorkoutsRow = document.createElement('tr');
+                const noWorkoutsCell = document.createElement('td');
+                noWorkoutsCell.colSpan = 5; // Mudado para 5 já que temos 5 colunas
+                noWorkoutsCell.textContent = 'Nenhum treino cadastrado para este aluno.';
+                noWorkoutsRow.appendChild(noWorkoutsCell);
+                tableBody.appendChild(noWorkoutsRow);
+            } else {
+                studentWorkouts.forEach(workout => {
+                    workout.exercises.forEach(ex => {
+                        const row = document.createElement('tr');
+
+                        const exerciseCell = document.createElement('td');
+                        exerciseCell.textContent = ex.exercise;
+                        row.appendChild(exerciseCell);
+
+                        const setsCell = document.createElement('td');
+                        setsCell.textContent = ex.sets;
+                        row.appendChild(setsCell);
+
+                        const repetitionsCell = document.createElement('td');
+                        repetitionsCell.textContent = ex.repetitions;
+                        row.appendChild(repetitionsCell);
+
+                        const doneCell = document.createElement('td');
+                        const doneInput = document.createElement('input');
+                        doneInput.type = 'checkbox';
+                        doneInput.value = 'fez';
+                        doneCell.appendChild(doneInput);
+                        row.appendChild(doneCell);
+
+                        const quantityCell = document.createElement('td');
+                        const quantityInput = document.createElement('input');
+                        quantityInput.type = 'number';
+                        quantityInput.value = 0;
+                        quantityInput.min = 0;
+                        quantityCell.appendChild(quantityInput);
+                        row.appendChild(quantityCell);
+
+                        tableBody.appendChild(row);
+                    });
+                });
+            }
+
+            document.getElementById('save-progress').addEventListener('click', () => {
+                const progressData = [];
+                const rows = tableBody.querySelectorAll('tr');
+
+                rows.forEach(row => {
+                    const checkbox = row.querySelector('input[type="checkbox"]');
+                    const quantityInput = row.querySelector('input[type="number"]');
+                    if (checkbox && quantityInput) {
+                        progressData.push({
+                            completed: checkbox.checked,
+                            quantity: parseInt(quantityInput.value) || 0
+                        });
+                    }
+                });
+
+                localStorage.setItem('progressData', JSON.stringify(progressData));
+                alert('Progresso salvo com sucesso!');
+            });
+        });
+    </script>
+</body>
+</html>

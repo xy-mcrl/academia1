@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Progresso dos Alunos</title>
+    <style>
+        /* Estilo básico */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        #app {
+            background-color: white;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: auto;
+        }
+        h1 {
+            color: #e61717;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #e61717;
+            color: white;
+        }
+        .button-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .back-button {
+            background-color: #e61717;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .back-button:hover {
+            background-color: #8f2828;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1>Progresso do Aluno</h1>
+        <p id="progress-info"></p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome do Aluno</th>
+                    <th>Exercício</th>
+                    <th>Quantidade Feita</th>
+                </tr>
+            </thead>
+            <tbody id="progress-table">
+                <!-- Os dados do progresso dos alunos serão inseridos aqui -->
+            </tbody>
+        </table>
+        <div class="button-container">
+            <button class="back-button" onclick="window.location.href='trainer.html'">Voltar</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Recupera os dados de progresso salvos no localStorage
+            const progressData = JSON.parse(localStorage.getItem('progressData')) || [];
+            const tableBody = document.getElementById('progress-table');
+            const studentName = prompt("Digite seu nome:"); // Pedir o nome do aluno
+
+            // Verifica se há dados a serem exibidos
+            if (progressData.length === 0) {
+                const row = document.createElement('tr');
+                const cell = document.createElement('td');
+                cell.colSpan = 3; // Ocupa todas as colunas
+                cell.textContent = 'Nenhum dado de progresso encontrado.';
+                row.appendChild(cell);
+                tableBody.appendChild(row);
+                return; // Sai da função se não houver dados
+            }
+
+            // Preenche a tabela com os dados de progresso
+            progressData.forEach(data => {
+                if (data.completed) { // Somente exibe se o exercício estiver concluído
+                    const row = document.createElement('tr');
+
+                    // Coluna Nome do Aluno
+                    const studentCell = document.createElement('td');
+                    studentCell.textContent = studentName; // Adiciona o nome do aluno
+                    row.appendChild(studentCell);
+
+                    // Coluna Exercício
+                    const exerciseCell = document.createElement('td');
+                    exerciseCell.textContent = data.exercise; // Nome do exercício
+                    row.appendChild(exerciseCell);
+
+                    // Coluna Quantidade Feita
+                    const quantityCell = document.createElement('td');
+                    quantityCell.textContent = data.quantity; // Quantidade feita
+                    row.appendChild(quantityCell);
+
+                    // Adiciona a linha na tabela
+                    tableBody.appendChild(row);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

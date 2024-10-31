@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Academia</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            height: 100vh;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            margin: 20px;
+        }
+        h2, h3 {
+            text-align: center;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input, .form-group button, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .button {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 16px;
+            text-decoration: none;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        .back-button {
+            margin-top: 15px;
+            background-color: #ffc107;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Tela Inicial de Seleção -->
+    <div class="container" id="role-selection">
+        <h2>Selecione seu Papel</h2>
+        <button class="button" onclick="showAuth('trainer')">Professor</button>
+        <button class="button" onclick="showAuth('student')">Aluno</button>
+    </div>
+
+    <!-- Tela de Autenticação (Login e Cadastro) -->
+    <div class="container" id="auth-screen" style="display: none;">
+        <h2 id="auth-title">Academia - Autenticação</h2>
+        <form id="loginForm" onsubmit="login(); return false;">
+            <div class="form-group">
+                <input type="email" id="email" placeholder="Email" required>
+            </div>
+            <div class="form-group">
+                <input type="password" id="password" placeholder="Senha" required>
+            </div>
+            <button type="submit">Entrar</button>
+        </form>
+        <button onclick="showRegister()">Cadastrar-se</button>
+    </div>
+
+    <!-- Tela de Cadastro -->
+    <div class="container" id="register-screen" style="display: none;">
+        <h2>Cadastro</h2>
+        <form id="registerForm" onsubmit="register(); return false;">
+            <div class="form-group">
+                <input type="email" id="registerEmail" placeholder="Email" required>
+            </div>
+            <div class="form-group">
+                <input type="password" id="registerPassword" placeholder="Senha" required>
+            </div>
+            <button type="submit">Cadastrar</button>
+        </form>
+        <button class="back-button" onclick="showRoleSelection()">Voltar</button>
+    </div>
+
+    <!-- Tela Principal Treinador -->
+    <div class="container" id="trainer-main" style="display: none;">
+        <h2>Painel do Treinador</h2>
+        <div class="button-container">
+            <button class="button" onclick="showScreen('registerWorkout')">Cadastro de Treino</button>
+            <button class="button" onclick="showScreen('viewWorkouts')">Listar Treinos</button>
+            <button class="button" onclick="showScreen('studentProgress')">Acompanhamento de Alunos</button>
+            <button class="button" onclick="showScreen('registerNutrition')">Cadastro de Plano Nutricional</button>
+            <button class="button" onclick="logout()">Sair</button>
+        </div>
+    </div>
+
+    <!-- Tela Principal Aluno -->
+    <div class="container" id="student-main" style="display: none;">
+        <h2>Painel do Aluno</h2>
+        <div class="button-container">
+            <button class="button" onclick="showScreen('viewWorkouts')">Meu Treino</button>
+            <button class="button" onclick="showScreen('viewNutrition')">Meu Plano Nutricional</button>
+            <button class="button" onclick="showScreen('chat')">Falar com o Treinador</button>
+            <button class="button" onclick="logout()">Sair</button>
+        </div>
+    </div>
+
+    <!-- Cadastro de Treino -->
+    <div class="container" id="registerWorkout" style="display: none;">
+        <h3>Cadastro de Treino</h3>
+        <form>
+            <div class="form-group">
+                <label for="nomeTreino">Nome do Treino</label>
+                <input type="text" id="nomeTreino" required>
+            </div>
+            <div class="form-group">
+                <label for="exercicio">Exercício</label>
+                <input type="text" id="exercicio" required>
+            </div>
+            <div class="form-group">
+                <label for="frequencia">Frequência (ex: 3x por semana)</label>
+                <input type="text" id="frequencia" required>
+            </div>
+            <button onclick="alert('Treino cadastrado!'); showMainScreen('trainer'); return false;">Salvar Treino</button>
+        </form>
+        <button class="back-button" onclick="showMainScreen('trainer')">Voltar</button>
+    </div>
+
+    <!-- Listar Treinos -->
+    <div class="container" id="viewWorkouts" style="display: none;">
+        <h3>Treinos</h3>
+        <ul>
+            <li>Treino 1 - 3x por semana</li>
+            <li>Treino 2 - 2x por semana</li>
+        </ul>
+        <button class="back-button" onclick="showMainScreen('trainer')">Voltar</button>
+    </div>
+
+    <!-- Acompanhamento dos Alunos -->
+    <div class="container" id="studentProgress" style="display: none;">
+        <h3>Progresso dos Alunos</h3>
+        <ul>
+            <li>Aluno 1 - 75% completo</li>
+            <li>Aluno 2 - 50% completo</li>
+        </ul>
+        <button class="back-button" onclick="showMainScreen('trainer')">Voltar</button>
+    </div>
+
+    <!-- Cadastro de Plano Nutricional -->
+    <div class="container" id="registerNutrition" style="display: none;">
+        <h3>Cadastro de Plano Nutricional</h3>
+        <form>
+            <div class="form-group">
+                <label for="nomePlano">Nome do Plano</label>
+                <input type="text" id="nomePlano" required>
+            </div>
+            <div class="form-group">
+                <label for="descricao">Descrição</label>
+                <textarea id="descricao" required></textarea>
+            </div>
+            <button onclick="alert('Plano nutricional salvo!'); showMainScreen('trainer'); return false;">Salvar Plano</button>
+        </form>
+        <button class="back-button" onclick="showMainScreen('trainer')">Voltar</button>
+    </div>
+
+    <!-- Chat com o Treinador -->
+    <div class="container" id="chat" style="display: none;">
+        <h3>Chat com o Treinador</h3>
+        <div id="messages" style="border: 1px solid #ddd; padding: 10px; height: 150px; overflow-y: auto; margin-bottom: 10px;">
+            <p><strong>Treinador:</strong> Como está o treino?</p>
+        </div>
+        <form onsubmit="sendMessage(); return false;">
+            <input type="text" id="messageInput" placeholder="Digite sua mensagem">
+            <button type="submit">Enviar</button>
+        </form>
+        <button class="back-button" onclick="showMainScreen('student')">Voltar</button>
+    </div>
+
+    <script>
+        let currentRole = '';
+
+        function showAuth(role) {
+            currentRole = role;
+            document.getElementById("auth-title").innerText = `Autenticação - ${role.charAt(0).toUpperCase() + role.slice(1)}`;
+            hideAllScreens();
+            document.getElementById("auth-screen").style.display = "block";
+        }
+
+        function showRegister() {
+            hideAllScreens();
+            document.getElementById("register-screen").style.display = "block";
+        }
+
+        function showRoleSelection() {
+            hideAllScreens();
+            document.getElementById("role-selection").style.display = "block";
+        }
+
+        function login() {
+            alert('Login realizado com sucesso!');
+            showMainScreen(currentRole);
+        }
+
+        function register() {
+            alert('Cadastro realizado com sucesso!');
+            showAuth(currentRole);
+        }
+
+        function logout() {
+            currentRole = '';
+            showRoleSelection();
+        }
+
+        function hideAllScreens() {
+            document.querySelectorAll('.container').forEach(container => {
+                container.style.display = 'none';
+            });
+        }
+
+        function showMainScreen(role) {
+            hideAllScreens();
+            if (role === 'trainer') {
+                document.getElementById("trainer-main").style.display = "block";
+            } else {
+                document.getElementById("student-main").style.display = "block";
+            }
+        }
+
+        function showScreen(screenId) {
+            hideAllScreens();
+            document.getElementById(screenId).style.display = "block";
+        }
+
+        function sendMessage() {
+            const message = document.getElementById("messageInput").value;
+            const messagesDiv = document.getElementById("messages");
+            messagesDiv.innerHTML += `<p><strong>Você:</strong> ${message}</p>`;
+            document.getElementById("messageInput").value = '';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Cadastro de Plano Nutricional</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #eef2f3; /* Cor de fundo suave */
+            margin: 0;
+            padding: 20px;
+        }
+
+        #app {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff; /* Cor de fundo do formulário */
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+
+        h1 {
+            color: #388E3C; /* Cor do título */
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px; /* Tamanho do título */
+        }
+
+        input, textarea, select {
+            width: 100%; /* Largura total dos campos */
+            padding: 10px; /* Espaçamento interno */
+            margin-bottom: 15px; /* Espaçamento abaixo dos campos */
+            border: 1px solid #ccc; /* Borda dos campos */
+            border-radius: 5px; /* Bordas arredondadas */
+        }
+
+        button {
+            background-color: #388E3C; /* Cor do botão */
+            color: white; /* Cor do texto do botão */
+            border: none; /* Sem borda */
+            padding: 10px; /* Espaçamento interno do botão */
+            border-radius: 5px; /* Bordas arredondadas do botão */
+            cursor: pointer; /* Cursor de ponteiro */
+            transition: background-color 0.3s; /* Transição suave da cor de fundo */
+            margin-right: 10px; /* Espaçamento entre os botões */
+        }
+
+        button:hover {
+            background-color: #4CAF50; /* Cor do botão ao passar o mouse */
+        }
+
+        .meal-container {
+            margin-bottom: 20px; /* Espaçamento abaixo do container de refeição */
+            border: 1px solid #ccc; /* Borda do container de refeição */
+            padding: 10px; /* Espaçamento interno do container */
+            border-radius: 5px; /* Bordas arredondadas */
+        }
+
+        .meal-container input {
+            margin-bottom: 10px; /* Espaçamento abaixo dos campos de refeição */
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1>Cadastrar Plano Nutricional</h1>
+        <form id="nutrition-form">
+            <input type="text" id="student-name" placeholder="Nome do Aluno" required>
+            <input type="text" id="nutrition-title" placeholder="Título do Plano" required>
+            <textarea id="nutrition-description" placeholder="Descrição do Plano" required></textarea>
+
+            <div class="meal-container">
+                <h2>Refeições</h2>
+                <select id="meal-type" required>
+                    <option value="" disabled selected>Selecione o tipo de refeição</option>
+                    <option value="café da manhã">Café da Manhã</option>
+                    <option value="lanche">Lanche</option>
+                    <option value="almoço">Almoço</option>
+                    <option value="lanche da tarde">Lanche da Tarde</option>
+                    <option value="jantar">Jantar</option>
+                    <option value="ceia">Ceia</option>
+                </select>
+                <input type="text" id="meal-foods" placeholder="Alimentos" required>
+                <input type="text" id="meal-quantity" placeholder="Quantidade" required>
+                <input type="time" id="meal-time" placeholder="Horário" required>
+            </div>
+
+            <button type="submit">Salvar Plano</button>
+            <button type="button" onclick="window.history.back()">Voltar</button>
+        </form>
+    </div>
+    <script>
+        document.getElementById('nutrition-form').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const studentName = document.getElementById('student-name').value;
+            const title = document.getElementById('nutrition-title').value;
+            const description = document.getElementById('nutrition-description').value;
+
+            // Coleta os dados das refeições
+            const mealType = document.getElementById('meal-type').value;
+            const mealFoods = document.getElementById('meal-foods').value;
+            const mealQuantity = document.getElementById('meal-quantity').value;
+            const mealTime = document.getElementById('meal-time').value;
+
+            // Armazenar plano no localStorage (exemplo)
+            let plans = JSON.parse(localStorage.getItem('nutritionPlans')) || [];
+            plans.push({ studentName, title, description, meal: { mealType, mealFoods, mealQuantity, mealTime } });
+            localStorage.setItem('nutritionPlans', JSON.stringify(plans));
+
+            alert("Plano nutricional cadastrado com sucesso!");
+            
+            // Limpar os campos do formulário após o envio
+            document.getElementById('nutrition-form').reset();
+        });
+    </script>
+</body>
+</html>
